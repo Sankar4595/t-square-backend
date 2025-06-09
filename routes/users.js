@@ -168,14 +168,27 @@ router.post("/login", async (req, res) => {
           id: user._id,
           role: user.role,
         });
-        res.status(201).send({
-          token,
-          message: "User Login Successfull",
-        });
+        // Set cookie with token
+        const data = {
+          name: user.name,
+          email: user.email,
+          id: user._id,
+          role: user.role,
+        };
+        res
+          .cookie("token", token, {
+            httpOnly: true,   // JavaScript can't access
+            secure: true,     // Set true only in HTTPS
+            sameSite: "Strict",
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
+          })
+          .status(201)
+          .send({
+            message: "User Login Successful",
+            data
+          });
       } else {
-        res.status(402).send({
-          message: "User Cretendial",
-        });
+        res.status(402).send({ message: "Invalid Credentials" });
       }
     } else {
       res.status(400).send({

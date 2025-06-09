@@ -11,6 +11,8 @@ mongoose.connect(DB_NAME);
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var techbridgeRouter = require("./routes/techbridge");
+var visaRouter = require("./routes/visa");
 
 var app = express();
 
@@ -27,6 +29,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/techbridge", techbridgeRouter);
+app.use("/visa", visaRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
